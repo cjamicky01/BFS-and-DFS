@@ -100,14 +100,30 @@ VertexNode* Graph::VertexExists(string v) const {
 // Returns NULL otherwise
 
 EdgeNode* Graph::EdgeExists(string s, string d) const {
+	VertexNode *tempS = VertexExists(s);
+	VertexNode *tempD = VertexExists(d);
+	EdgeNode *tempSedge = tempS->edgePtr;
 
+	while (tempSedge->destination != tempD || tempSedge == nullptr) {
+		tempSedge = tempSedge->nextEdge;
+	}
+
+	if (tempSedge == nullptr) {
+		return NULL;
+	}
+
+	return tempSedge;		
 }
 // EdgeExists()
 // Returns pointer to edge node if edge from vertex s to vertex d exists in graph 
 // Returns NULL otherwise
 
 int  Graph::WeightIs(string s, string d) {
+	if (EdgeExists(s, d) == NULL) {
+		throw GraphEdgeNotFound();
+	}
 
+	return EdgeExists(s, d)->weight;
 }
 // WeightIs()
 // Returns weight of edge (s,d).  Throws GraphEdgeNotFound if edge not present.
