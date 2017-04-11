@@ -14,7 +14,7 @@ Graph::~Graph() {
 
 	while(temp != nullptr) {
 		
-		temp2 = temp->edgePtr.NextEdge;
+		temp2 = temp->edgePtr->nextEdge;
 
 		while (temp2 != nullptr) {
 			temp2Del = temp2;
@@ -33,10 +33,10 @@ Graph::~Graph() {
 
 void Graph::AddVertex(string v) {
 	if (vertices = nullptr) {
-		vname = v;
+		vertices->vname = v;
 	}
 	else {
-		VertexNode *temp = vertices.nextVertex;
+		VertexNode *temp = vertices->nextVertex;
 		while (temp->nextVertex != nullptr) {
 			temp = temp->nextVertex;
 		}
