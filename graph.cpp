@@ -9,21 +9,21 @@ Graph::Graph() {
 Graph::~Graph() {
 	VertexNode *temp = vertices;
 	VertexNode *tempDel = temp;
-	EdgeNode *temp2 = vertices.edgePtr;
-	EdgeNode *temp2Del = temp;
+	EdgeNode *temp2 = vertices->edgePtr;
+	EdgeNode *temp2Del = temp->edgePtr;
 
 	while(temp != nullptr) {
 		
-		temp2 = temp.edgePtr.NextEdge;
+		temp2 = temp->edgePtr.NextEdge;
 
 		while (temp2 != nullptr) {
 			temp2Del = temp2;
-			temp2 = temp2.nextEdge;
+			temp2 = temp2->nextEdge;
 			delete temp2Del;
 		}
 
 		tempDel = temp;
-		temp = vertices.nextVertex;
+		temp = vertices->nextVertex;
 		delete tempDel;
 	}
 }
@@ -32,17 +32,17 @@ Graph::~Graph() {
 // deallocating the VertexNode itself
 
 void Graph::AddVertex(string v) {
-	if (vertices = nullptr;) {
+	if (vertices = nullptr) {
 		vname = v;
 	}
 	else {
 		VertexNode *temp = vertices.nextVertex;
-		while (temp.nextVertex != nullptr) {
-			temp = temp.nextVertex;
+		while (temp->nextVertex != nullptr) {
+			temp = temp->nextVertex;
 		}
 		VertexNode *temp2;
-		temp2.vname = v;
-		temp.nextVertex = temp2;
+		temp2->vname = v;
+		temp->nextVertex = temp2;
 
 	}
 }
@@ -53,21 +53,21 @@ void Graph::AddEdge(string s, string d, int w) {
 	VertexNode *tempS = vertices;
 	VertexNode *tempD = vertices;
 	
-	while (tempD.vname != d) {
-		tempD = tempD.nextVertex;
+	while (tempD->vname != d) {
+		tempD = tempD->nextVertex;
 	}
 	
-	while (tempS.vname != s) {
-		tempS = tempS.nextVertex;
+	while (tempS->vname != s) {
+		tempS = tempS->nextVertex;
 	}
-	EdgeNode *temp = tempS.edgePtr;
+	EdgeNode *temp = tempS->edgePtr;
 	while (temp != nullptr) {
-		temp = temp.nextEdge;
+		temp = temp->nextEdge;
 	}
 	EdgeNode *Node;
-	temp.nextEdge = Node;
-	Node.destination = tempD;
-	Node.weight = w;
+	temp->nextEdge = Node;
+	Node->destination = tempD;
+	Node->weight = w;
 }
 // AddEdge()
 // Adds edge from source S  to destination D with specified weight W.
@@ -75,10 +75,10 @@ void Graph::AddEdge(string s, string d, int w) {
 
 VertexNode* Graph::VertexExists(string v) const {
 	VertexNode *temp = vertices;
-	while (temp.vname != v) {
-		temp = temp.nextVertex;
+	while (temp->vname != v) {
+		temp = temp->nextVertex;
 	}
-	temp = temp.nextVertex;
+	temp = temp->nextVertex;
 	return temp;
 }
 // VertexExists()
