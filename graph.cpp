@@ -13,17 +13,18 @@ Graph::~Graph() {
 	EdgeNode *temp2Del = temp->edgePtr;
 
 	while(temp != nullptr) {
-		
-		temp2 = temp->edgePtr->nextEdge;
+		if(temp->edgePtr != nullptr){
+			temp2 = temp->edgePtr->nextEdge;
 
-		while (temp2 != nullptr) {
-			temp2Del = temp2;
-			temp2 = temp2->nextEdge;
-			delete temp2Del;
+			while (temp2 != nullptr) {
+				temp2Del = temp2;
+				temp2 = temp2->nextEdge;
+				delete temp2Del;
+			}
 		}
 
 		tempDel = temp;
-		temp = vertices->nextVertex;
+		temp = temp->nextVertex;
 		delete tempDel;
 	}
 }
@@ -32,15 +33,21 @@ Graph::~Graph() {
 // deallocating the VertexNode itself
 
 void Graph::AddVertex(string v) {
-	if (vertices = nullptr) {
-		vertices->vname = v;
+	VertexNode *temp = new VertexNode();
+	if (vertices == nullptr) {
+		temp->vname = v;
+		temp->mark = false;
+		temp->edgePtr = nullptr;
+		temp->nextVertex = nullptr;
+		vertices = temp;
 	}
 	else {
-		VertexNode *temp = vertices->nextVertex;
+		VertexNode *temp = new VertexNode();
+		temp = vertices;
 		while (temp->nextVertex != nullptr) {
 			temp = temp->nextVertex;
 		}
-		VertexNode *temp2;
+		VertexNode *temp2 = new VertexNode();
 		temp2->vname = v;
 		temp->nextVertex = temp2;
 
@@ -50,24 +57,27 @@ void Graph::AddVertex(string v) {
 // Adds vertex to graph assuming vertex not already present
 
 void Graph::AddEdge(string s, string d, int w) {
-	VertexNode *tempS = vertices;
-	VertexNode *tempD = vertices;
+	VertexNode *tempS = VertexExists(s);
+	VertexNode *tempD = VertexExists(d);
 	
-	while (tempD->vname != d) {
-		tempD = tempD->nextVertex;
+	EdgeNode *tempEdge = new EdgeNode();
+	EdgeNode *tempSedge = tempS->edgePtr;
+	
+	tempEdge->destination = tempD;
+	tempEdge->weight = w;
+	tempEdge->nextEdge = nullptr;
+
+	if(tempS->edgePtr == nullptr){
+		tempS->edgePtr = tempEdge;
+	
+	} else {
+		while(tempSedge->nextEdge != nullptr){
+			tempSedge = tempSedge->nextEdge;
+		}
+		
+		tempSedge->nextEdge = tempEdge;
 	}
 	
-	while (tempS->vname != s) {
-		tempS = tempS->nextVertex;
-	}
-	EdgeNode *temp = tempS->edgePtr;
-	while (temp != nullptr) {
-		temp = temp->nextEdge;
-	}
-	EdgeNode *Node;
-	temp->nextEdge = Node;
-	Node->destination = tempD;
-	Node->weight = w;
 }
 // AddEdge()
 // Adds edge from source S  to destination D with specified weight W.
@@ -75,10 +85,14 @@ void Graph::AddEdge(string s, string d, int w) {
 
 VertexNode* Graph::VertexExists(string v) const {
 	VertexNode *temp = vertices;
-	while (temp->vname != v) {
+	while (temp->vname != v || temp == nullptr ) {
 		temp = temp->nextVertex;
 	}
-	temp = temp->nextVertex;
+	if(temp == nullptr){
+		return NULL;
+	}
+
+
 	return temp;
 }
 // VertexExists()

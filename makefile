@@ -1,5 +1,5 @@
 # homework01 makefile
-CC=g++
+CC=g++ -std=c++0x
 #CC=g++ -fprofile-arcs -ftest-coverage
 
 homework01: graph.o main.o 
