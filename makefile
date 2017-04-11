@@ -1,9 +1,9 @@
-# homework03 makefile
+# homework01 makefile
 CC=g++
 #CC=g++ -fprofile-arcs -ftest-coverage
 
-homework03: graph.o main.o 
-	$(CC) graph.o main.o  -o homework03
+homework01: graph.o main.o 
+	$(CC) graph.o main.o  -o homework01
 
 graph.o: graph.h graph.cpp
 	$(CC) -c graph.cpp

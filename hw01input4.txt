@@ -1,0 +1,37 @@
+# hw01input4.txt - Test GetToVertices()
+
+# Test GetToVertices() using larger directed graph
+c
+v A
+v B
+v C
+v D
+v E
+v F
+v G
+v H
+d A B 25
+d A C 10
+d A E 60
+d B G 75
+d B H 15
+d C E 15
+d D F 25
+d D H 80
+d E G 35
+d E F 5
+d F H 40
+p
+g A
+g B
+g C
+g D
+g E
+g F
+g G
+g H
+g K
+~
+
+
+

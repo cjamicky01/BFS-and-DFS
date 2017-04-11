@@ -1,0 +1,111 @@
+# hw01input6.txt - Test BreadthFirstSearch() and supporting functions
+
+# Test BreadthFirstSearch() using small undirected graph
+c
+v A
+v B
+v C
+v D
+u A B 5
+u A C 10
+u B C 15
+u B D 25
+u C D 20
+p
+b A B
+b A C
+b A D
+b A K
+b D A
+~
+
+
+# Test BreadthFirstSearch() using small directed graph
+c
+v A
+v B
+v C
+v D
+d A B 5
+d A C 10
+d B C 15
+d D B 25
+d C D 20
+p
+b A B
+b A C
+b A D
+b A K
+b D A
+~
+
+
+# Test BreadthFirstSearch() using larger undirected graph
+c
+v A
+v B
+v C
+v D
+v E
+v F
+v G
+v H
+u A B 25
+u A C 10
+u A E 60
+u B G 75
+u B H 15
+u C E 15
+u D F 25
+u D H 80
+u E G 35
+u E F 5
+u F H 40
+p
+b A B
+b A C
+b A G
+b A D
+b A E
+b A H
+b A K
+~
+
+
+# Test BreadthFirstSearch() using larger directed graph
+c
+v A
+v B
+v C
+v D
+v E
+v F
+v G
+v H
+d A B 25
+d A C 10
+d A E 60
+d B G 75
+d B H 15
+d C E 15
+d D F 25
+d D H 80
+d E G 35
+d E F 5
+d F H 40
+p
+b A B
+b A C
+b A G
+b A D
+b A E
+b A H
+b A K
+b G A
+b H E
+~
+
+
+
+
+
