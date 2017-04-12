@@ -49,7 +49,9 @@ void Graph::AddVertex(string v) {
 		}
 		VertexNode *temp2 = new VertexNode();
 		temp2->vname = v;
+		temp2->nextVertex = nullptr;
 		temp->nextVertex = temp2;
+
 
 	}
 }
@@ -85,15 +87,15 @@ void Graph::AddEdge(string s, string d, int w) {
 
 VertexNode* Graph::VertexExists(string v) const {
 	VertexNode *temp = vertices;
-	while (temp->vname != v || temp == nullptr ) {
+	while(temp != nullptr){
+		if(temp->vname == v){
+			return temp;
+		}
 		temp = temp->nextVertex;
 	}
-	if(temp == nullptr){
-		return NULL;
-	}
+	
+	return NULL;
 
-
-	return temp;
 }
 // VertexExists()
 // Returns pointer to corresponding VertexNode if vertex V in graph 
@@ -102,40 +104,57 @@ VertexNode* Graph::VertexExists(string v) const {
 EdgeNode* Graph::EdgeExists(string s, string d) const {
 	VertexNode *tempS = VertexExists(s);
 	VertexNode *tempD = VertexExists(d);
-	EdgeNode *tempSedge = tempS->edgePtr;
 
-	while (tempSedge->destination != tempD || tempSedge == nullptr) {
+	if(tempS != NULL && tempD != NULL){
+
+			EdgeNode *tempSedge = tempS->edgePtr;
+
+		while(tempSedge != nullptr){
+			if(tempSedge->destination == tempD){
+				return tempSedge;
+			}
 		tempSedge = tempSedge->nextEdge;
 	}
+	} else {
 
-	if (tempSedge == nullptr) {
-		return NULL;
+	return NULL;
 	}
-
-	return tempSedge;		
+		
 }
 // EdgeExists()
 // Returns pointer to edge node if edge from vertex s to vertex d exists in graph 
 // Returns NULL otherwise
 
 int  Graph::WeightIs(string s, string d) {
-	if (EdgeExists(s, d) == NULL) {
+	EdgeNode *temp = EdgeExists(s,d);
+	if (temp == NULL) {
 		throw GraphEdgeNotFound();
 	}
 
-	return EdgeExists(s, d)->weight;
+	return temp->weight;
 }
 // WeightIs()
 // Returns weight of edge (s,d).  Throws GraphEdgeNotFound if edge not present.
 
 void Graph::ClearMarks() {
-
+	VertexNode *temp = vertices;
+	while(temp != NULL){
+		temp->mark = false;
+		temp = temp->nextVertex;
+	}
 }
 // ClearMarks()
 // Clears all vertex marks
 
 void Graph::MarkVertex(string v) {
 
+	VertexNode * temp = VertexExists(v);
+
+	if(temp != NULL){
+		temp->mark = true;
+	} else {
+		throw GraphVertexNotFound();
+	}
 }
 // MarkVertex()
 // Marks vertex V as visited
@@ -143,13 +162,37 @@ void Graph::MarkVertex(string v) {
 
 bool Graph::IsMarked(string v) {
 
+	VertexNode *temp = VertexExists(v);
+	if(temp != NULL){
+		if(temp->mark){
+			return true;
+		}
+		return false;
+	} else {
+		throw GraphVertexNotFound();
+	}
+
 }
 // IsMarked()
 // Returns true if vertex V is marked, false if not marked
 // Throws GraphVertexNotFound if not present
 
 void Graph::GetToVertices(string V, queue<string>& q) {
-
+	VertexNode *target = VertexExists(V);
+	
+	if (target != NULL)
+	{
+		EdgeNode *temp = target->edgePtr;
+		while (temp != nullptr)
+		{
+			q.push(temp->destination->vname);
+			temp = temp->nextEdge;
+		}
+	}
+	else
+	{
+		throw GraphVertexNotFound();
+	}
 }
 // GetToVertices()
 // Returns queue Q of vertex names of those vertices adjacent to vertex V

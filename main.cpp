@@ -134,6 +134,7 @@ int main(int argc, char* argv[])
                 try
                 {
 				    inputs >> v1;
+				    cout << "V1: " << v1 << endl;
 				    if (gPtr->VertexExists(v1) != NULL)
 					    cout << "VertexExists(" << v1 << ") -- true" << endl;
 				    else
