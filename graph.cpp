@@ -199,8 +199,57 @@ void Graph::GetToVertices(string V, queue<string>& q) {
 // The queue here is from the Standard Template Library
 // Throws GraphVertexNotFound if not present
 
-void Graph::DepthFirstSearch(string startVertex, string endVertex, queue<string>& path) {
+void Graph::DepthFirstSearch(string startVertex, string endVertex, queue<string>& path)
+{
+	if(VertexExists(startVertex)!= NULL && VertexExists(endVertex)!=NULL)
+	{
+		int size =0;
+		MarkVertex(startVertex);
+		queue<string> adjacentQ;
+		stack<string> searchs;
+		GetToVertices(startVertex, adjacentQ);
+		size = adjacentQ.size();
+		path.push(startVertex);
 
+		for (int i = 0; i < size; i++)
+		{
+			searchs.push(adjacentQ.front());
+			adjacentQ.pop();
+		}
+		while (!searchs.empty() && searchs.top() != endVertex )
+		{
+			if(!IsMarked(searchs.top()))
+			{
+				MarkVertex(searchs.top());
+				path.push(searchs.top());
+				GetToVertices(searchs.top(), adjacentQ);
+				size  = adjacentQ.size();
+				searchs.pop();
+				for (int i = 0; i < size; i++)
+				{
+					searchs.push(adjacentQ.front());
+					adjacentQ.pop();
+				}
+			}
+			else
+			{
+				searchs.pop();
+			}
+		}
+		if(searchs.empty())
+		{
+			size  = path.size();
+			for(int i=0; i<size;i++)
+			{
+				path.pop();
+			}
+		}
+		else
+		{
+			path.push(searchs.top());
+		}
+		ClearMarks();
+	}
 }
 // DepthFirstSearch()
 // Notes:
@@ -213,58 +262,47 @@ void Graph::DepthFirstSearch(string startVertex, string endVertex, queue<string>
 
 void Graph::BreadthFirstSearch(string startVertex, string endVertex, queue<string>& visitedq)
 {
-	queue<string> q;
-	queue<string> adjQ;
-
-	if ((VertexExists(startVertex) == NULL) || (VertexExists(endVertex) == NULL))
-		throw GraphVertexNotFound();
-	bool found = false;
-	string vertex;
-	string item;
-
-	ClearMarks();
-	q.push(startVertex);
-	do
+	if (VertexExists(startVertex) != NULL && VertexExists(endVertex) != NULL)
 	{
-		vertex = q.front();
-		q.pop();
-		if (vertex == endVertex)
+		MarkVertex(startVertex);
+		queue<string> adjacentQ;
+		GetToVertices(startVertex, adjacentQ);
+		visitedq.push(startVertex);
+
+		while (!adjacentQ.empty() && adjacentQ.front() != endVertex)
 		{
-			found = true;
-			visitedq.push(vertex);
+			if (!IsMarked(adjacentQ.front()))
+			{
+				MarkVertex(adjacentQ.front());
+				visitedq.push(adjacentQ.front());
+				GetToVertices(adjacentQ.front(), adjacentQ);
+				adjacentQ.pop();
+			}
+			else
+			{
+				adjacentQ.pop();
+			}
+		}
+		if (adjacentQ.empty())
+		{
+			int size = visitedq.size();
+			for (int i = 0; i < size; i++)
+			{
+				visitedq.pop();
+			}
 		}
 		else
 		{
-			if (!IsMarked(vertex))
-			{
-				MarkVertex(vertex);
-				visitedq.push(vertex);
-				GetToVertices(vertex, adjQ);
-
-				while (!adjQ.empty())
-				{
-					item = adjQ.front();
-					adjQ.pop();
-
-					if (!IsMarked(item))
-						q.push(item);
-				}
-			}
+			visitedq.push(adjacentQ.front());
 		}
-	} while (!q.empty() && !found);
-
-	if (!found)
-	{
-		while (!visitedq.empty())
-		{
-			visitedq.pop();
-		}
+		ClearMarks();
 	}
-
-} // End BreadthFirstSearch()
+}
 // BreadthFirstSearch()
 // Uses the BFS algorithm to determine a path from the
 // startVertex to the endVertex.  If a path is found, the path vertices should
 // be in the visited queue.  If no path is found, the visited queue should be emptied
 // as a signal to the client code that no path exists between the start and
 // end vertices.
+
+
